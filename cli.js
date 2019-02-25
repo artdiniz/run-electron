@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
-const {spawn} = require('child_process');
 const electron = require('electron');
+const execa = require('execa');
 const split = require('split2');
 const filter = require('through2-filter');
 const map = require('through2-map');
@@ -27,7 +27,7 @@ const removeJunk = () => {
 	return pumpify(split(), map(chunk => `${chunk}\n`), filterStream);
 };
 
-const cp = spawn(electron, process.argv.slice(2));
+const cp = execa(electron, process.argv.slice(2));
 
 cp.stdout.pipe(removeJunk()).pipe(process.stdout);
 cp.stderr.pipe(removeJunk()).pipe(process.stderr);
